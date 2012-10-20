@@ -38,7 +38,7 @@ template <class TInputImage, class TOutputImage>
 void
 ShotNoiseImageFilter<TInputImage, TOutputImage>
 ::ThreadedGenerateData( const OutputImageRegionType &outputRegionForThread,
-                        int threadId)
+                        ThreadIdType threadId)
 {
   InputImageConstPointer  inputPtr = this->GetInput();
   OutputImagePointer outputPtr = this->GetOutput(0);
@@ -46,7 +46,7 @@ ShotNoiseImageFilter<TInputImage, TOutputImage>
   // create a random generator per thread
   typename Statistics::ThreadSafeMersenneTwisterRandomVariateGenerator::Pointer rand = 
       Statistics::ThreadSafeMersenneTwisterRandomVariateGenerator::New();
-  rand->Initialize();
+  rand->Initialize( time(NULL) );
   typename Statistics::NormalVariateGenerator::Pointer randn = Statistics::NormalVariateGenerator::New();
   
   // Define the portion of the input to walk for this thread, using

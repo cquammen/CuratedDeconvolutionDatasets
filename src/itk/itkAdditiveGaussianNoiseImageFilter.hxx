@@ -38,15 +38,16 @@ template <class TInputImage, class TOutputImage>
 void
 AdditiveGaussianNoiseImageFilter<TInputImage, TOutputImage>
 ::ThreadedGenerateData( const OutputImageRegionType &outputRegionForThread,
-                        int threadId)
+                        ThreadIdType threadId)
 {
   InputImageConstPointer  inputPtr = this->GetInput();
   OutputImagePointer outputPtr = this->GetOutput(0);
   
   // create a random generator per thread
   typename Statistics::NormalVariateGenerator::Pointer randn = Statistics::NormalVariateGenerator::New();
-  
-  // Define the portion of the input to walk for this thread, using
+  randn->Initialize( time( NULL ) );
+
+  // Define the portion of the input   to walk for this thread, using
   // the CallCopyOutputRegionToInputRegion method allows for the input
   // and output images to be different dimensions
   InputImageRegionType inputRegionForThread;
