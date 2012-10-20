@@ -8,6 +8,8 @@ bool GetArgument( int argc, char* argv[], const std::string & name, bool require
 bool GetArgument( int argc, char* argv[], const std::string & name, bool required,
                   bool & value, bool & valueSet );
 bool GetArgument( int argc, char* argv[], const std::string & name, bool required,
+                  int & value, bool & valueSet );
+bool GetArgument( int argc, char* argv[], const std::string & name, bool required,
                   double & value, bool & valueSet );
 
 #endif
