@@ -37,7 +37,35 @@ bool GetArgument( int argc, char* argv[], const std::string & name, bool require
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
-bool GetArgument( int argc, char* argv[], const std::string & name, bool requird,
+bool GetArgument( int argc, char* argv[], const std::string & name, bool required,
+                  bool & value, bool & valueSet )
+{
+  value = false;
+  valueSet = false;
+
+  for ( int i = 0; i < argc; ++i )
+    {
+    std::string candidateArgument( argv[i] );
+    if ( candidateArgument == name )
+      {
+      value = true;
+      std::cout << "Argument " << name << " set to '" << value << "'" << std::endl;
+      valueSet = true;
+      return true;
+      }
+    }
+
+  if ( required )
+    {
+    std::cerr << "Argument " << name << " is required" << std::endl;
+    return false;
+    }
+
+  return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////
+bool GetArgument( int argc, char* argv[], const std::string & name, bool required,
                   double & value, bool & valueSet )
 {
   valueSet = false;
@@ -59,6 +87,12 @@ bool GetArgument( int argc, char* argv[], const std::string & name, bool requird
         return false;
         }
       }
+    }
+
+  if ( required )
+    {
+    std::cerr << "Argument " << name << " is required" << std::endl;
+    return false;
     }
 
   return true;
