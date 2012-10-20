@@ -12,8 +12,21 @@ include_directories(
 
 message(STATUS ${CuratedDeconvolutionDatasets_SRC_DIR}/src/itk )
 
-add_executable( AddNoise
+add_library( Arguments
   src/Arguments.cxx
-  AddNoise.cxx
 )
-target_link_libraries( AddNoise ${ITK_LIBRARIES} )
+
+set(EXECUTABLES
+  AddNoise
+  BlurImage
+)
+
+foreach( executable ${EXECUTABLES} )
+  add_executable( ${executable}
+    ${executable}.cxx
+    )
+  target_link_libraries( ${executable}
+    ${ITK_LIBRARIES}
+    Arguments
+    )
+endforeach()
