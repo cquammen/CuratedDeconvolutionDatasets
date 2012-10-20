@@ -45,7 +45,10 @@ AdditiveGaussianNoiseImageFilter<TInputImage, TOutputImage>
   
   // create a random generator per thread
   typename Statistics::NormalVariateGenerator::Pointer randn = Statistics::NormalVariateGenerator::New();
-  randn->Initialize( time( NULL ) );
+
+  // initialize with different seeds, otherwise we may get a repeating
+  // pattern of noise in the dimension along which the input is split
+  randn->Initialize( time( NULL ) + threadId );
 
   // Define the portion of the input   to walk for this thread, using
   // the CallCopyOutputRegionToInputRegion method allows for the input

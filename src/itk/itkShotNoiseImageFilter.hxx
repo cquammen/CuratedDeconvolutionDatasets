@@ -46,7 +46,10 @@ ShotNoiseImageFilter<TInputImage, TOutputImage>
   // create a random generator per thread
   typename Statistics::ThreadSafeMersenneTwisterRandomVariateGenerator::Pointer rand = 
       Statistics::ThreadSafeMersenneTwisterRandomVariateGenerator::New();
-  rand->Initialize( time(NULL) );
+
+  // initialize with different seeds, otherwise we may get a repeating
+  // pattern of noise in the dimension along which the input is split
+  rand->Initialize( time( NULL ) + threadId );
   typename Statistics::NormalVariateGenerator::Pointer randn = Statistics::NormalVariateGenerator::New();
   
   // Define the portion of the input to walk for this thread, using
