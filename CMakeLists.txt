@@ -19,6 +19,7 @@ add_library( Arguments
 set(EXECUTABLES
   AddNoise
   BlurImage
+  DeconvolveImage
 )
 
 foreach( executable ${EXECUTABLES} )
