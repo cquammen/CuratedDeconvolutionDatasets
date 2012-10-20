@@ -16,7 +16,7 @@ add_library( Arguments
   src/Arguments.cxx
 )
 
-set(EXECUTABLES
+set( EXECUTABLES
   AddNoise
   BlurImage
   DeconvolveImage
@@ -29,5 +29,17 @@ foreach( executable ${EXECUTABLES} )
   target_link_libraries( ${executable}
     ${ITK_LIBRARIES}
     Arguments
+    )
+endforeach()
+
+set( SCRIPTS
+  GenerateNoisyImages.sh
+)
+
+foreach( script ${SCRIPTS} )
+  configure_file(
+    ${CuratedDeconvolutionDatasets_SOURCE_DIR}/scripts/${script}
+    ${CuratedDeconvolutionDatasets_BINARY_DIR}/scripts/${script}
+    COPYONLY
     )
 endforeach()
