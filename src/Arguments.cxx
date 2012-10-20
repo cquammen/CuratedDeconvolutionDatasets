@@ -3,7 +3,8 @@
 #include <iostream>
 
 ///////////////////////////////////////////////////////////////////////////////////////
-bool GetArgument( int argc, char* argv[], const std::string & name, std::string & value, bool & valueSet )
+bool GetArgument( int argc, char* argv[], const std::string & name, bool required,
+                  std::string & value, bool & valueSet )
 {
   valueSet = false;
   for ( int i = 0; i < argc; ++i )
@@ -26,11 +27,18 @@ bool GetArgument( int argc, char* argv[], const std::string & name, std::string 
       }
     }
 
+  if ( required )
+    {
+    std::cerr << "Argument " << name << " is required" << std::endl;
+    return false;
+    }
+
   return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
-bool GetArgument( int argc, char* argv[], const std::string & name, double & value, bool & valueSet )
+bool GetArgument( int argc, char* argv[], const std::string & name, bool requird,
+                  double & value, bool & valueSet )
 {
   valueSet = false;
   for ( int i = 0; i < argc; ++i )
@@ -47,7 +55,7 @@ bool GetArgument( int argc, char* argv[], const std::string & name, double & val
         }
       else
         {
-        std::cerr << "Argument " << name << " requires a string argument" << std::endl;
+        std::cerr << "Argument " << name << " requires a double argument" << std::endl;
         return false;
         }
       }

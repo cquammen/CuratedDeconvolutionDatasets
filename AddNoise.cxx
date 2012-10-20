@@ -17,8 +17,8 @@ int main( int argc, char* argv[] )
   bool outputSet    = false;
   std::string outputName;
  
-  bool noiseTypeSet = false;
-  std::string noiseType;
+  bool noiseSet = false;
+  std::string noise;
 
   bool meanSet      = false;
   double mean       = 0.0;
@@ -29,12 +29,12 @@ int main( int argc, char* argv[] )
   bool scaleSet     = false;
   double scale      = 1.0;
 
-  if ( !GetArgument( argc, argv, "--input", inputName, inputSet ) ||
-       !GetArgument( argc, argv, "--output", outputName, outputSet ) ||
-       !GetArgument( argc, argv, "--noiseType", noiseType, noiseTypeSet ) ||
-       !GetArgument( argc, argv, "--mean", mean, meanSet ) ||
-       !GetArgument( argc, argv, "--stdev", stdev, stdevSet ) ||
-       !GetArgument( argc, argv, "--scale", scale, scaleSet ) )
+  if ( !GetArgument( argc, argv, "--input",  true,  inputName,  inputSet  ) ||
+       !GetArgument( argc, argv, "--output", true,  outputName, outputSet ) ||
+       !GetArgument( argc, argv, "--noise",  true,  noise,      noiseSet  ) ||
+       !GetArgument( argc, argv, "--mean",   false, mean,       meanSet   ) ||
+       !GetArgument( argc, argv, "--stdev",  false, stdev,      stdevSet  ) ||
+       !GetArgument( argc, argv, "--scale",  false, scale,      scaleSet  ) )
     {
     return EXIT_FAILURE;
     }
