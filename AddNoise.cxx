@@ -53,11 +53,13 @@ int main( int argc, char* argv[] )
     }
 
   // Set up useful typedefs
-  typedef double                              PixelType;
-  const unsigned int                          Dimension = 3;
-  typedef itk::Image< PixelType, Dimension >  ImageType;
-  typedef itk::ImageFileReader< ImageType >   ReaderType;
-  typedef itk::ImageFileWriter< ImageType >   WriterType;
+  typedef double                                             PixelType;
+  const unsigned int                                         Dimension = 3;
+  typedef itk::Image< PixelType, Dimension >                 ImageType;
+  typedef itk::ImageFileReader< ImageType >                  ReaderType;
+  typedef itk::ImageFileWriter< ImageType >                  WriterType;
+  typedef itk::ShotNoiseImageFilter< ImageType >             PoissonNoiseType;
+  typedef itk::AdditiveGaussianNoiseImageFilter< ImageType > GaussianNoiseType;
 
   // Read input image
   try
@@ -66,12 +68,32 @@ int main( int argc, char* argv[] )
     reader->SetFileName( inputFile.c_str() );
 
     // Add noise
+    PoissonNoiseType::Pointer poissonFilter = PoissonNoiseType::New();
+    poissonFilter->SetScale( scale );
 
+    GaussianNoiseType::Pointer gaussianFilter = GaussianNoiseType::New();
+    gaussianFilter->SetMean( mean );
+    gaussianFilter->SetStandardDeviation( stdev );
 
-    // Write output image
+    // Set up writer
     WriterType::Pointer writer = WriterType::New();
     writer->SetFileName( outputFile.c_str() );
-    writer->SetInput( reader->GetOutput() );
+    
+    if ( noise == "Poisson" )
+      {
+      poissonFilter->SetInput( reader->GetOutput() );
+      writer->SetInput( poissonFilter->GetOutput() );      
+      }
+    else if ( noise == "Gaussian" )
+      {
+      gaussianFilter->SetInput( reader->GetOutput() );
+      writer->SetInput( gaussianFilter->GetOutput() );
+      }
+    else
+      {
+      std::cerr << "Should't ever get here!" << std::endl;
+      }
+
     writer->Update();
     }
   catch ( itk::ExceptionObject & e )
